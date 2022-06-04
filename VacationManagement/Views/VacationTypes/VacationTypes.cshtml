@@ -1,0 +1,49 @@
+﻿@model IEnumerable<VacationManagement.Models.VacationType>
+
+@{
+    ViewData["Title"] = "VacationTypes";
+}
+
+<h4>انواع الاجازات</h4>
+
+<p>
+    <a asp-action="Create" class="btn btn-info">اضافة جديدة</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.VacationName)
+            </th>
+            <th style="width:30%">
+                @Html.DisplayNameFor(model => model.BackGroundColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberDays)
+            </th>
+           
+            <th>الاحداث</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+             
+            <td>
+                @Html.DisplayFor(modelItem => item.VacationName)
+            </td>
+            <td style="color:white;background-color:@item.BackGroundColor;width:30%">
+                @Html.DisplayFor(modelItem => item.BackGroundColor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberDays)
+            </td>
+           
+            <td>
+                @Html.ActionLink("تعديل", "Edit", new { id=item.Id },htmlAttributes:new{@class="btn btn-success"}) 
+                @Html.ActionLink("مسح", "Delete",  new { id=item.Id },htmlAttributes:new{@class="btn btn-danger"})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

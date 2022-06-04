@@ -1,0 +1,91 @@
+﻿@model VacationManagement.Models.VacationPlan
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+
+<h4>طلب اجازة</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="input-group mb-3">
+                <span class="input-group-text"> الموظف</span>
+                <input type="text" class="form-control" placeholder="ادخل اسم الموظف " id="employeeName" name="employeeName"/>
+                <div class="input-group-append">
+                    <button class="btn btn-success" type="button" onclick="FindEmployee()" id="">بحث عن الموظف</button>
+                </div>
+                <select class="form-control" id="ddlEmployees" >
+                    <option value="">----- البحث عن الموظفين-----</option>
+                </select>
+            </div>
+     <span asp-validation-for="RequestVacation.EmployeeId" class="text-danger"></span>
+
+          <div class="row">
+          <div class="form-group col-md-6">
+                <label asp-for="RequestVacation.StartDate" class="control-label"></label>
+                <input asp-for="RequestVacation.StartDate" class="form-control" type="date"/>
+                <span asp-validation-for="RequestVacation.StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="RequestVacation.EndtDate" class="control-label"></label>
+                <input asp-for="RequestVacation.EndtDate" class="form-control" type="date"/>
+                <span asp-validation-for="RequestVacation.EndtDate" class="text-danger"></span>
+            </div>
+            </div>
+
+            <div class="form-row mt-3">
+                <h4> تضمين ايام الاجازات</h4>
+                <div class="form-group">
+                    @{
+                        DayOfWeek day;
+                        for (int i = 0; i < 7; i++)
+                        {
+                            day = (DayOfWeek)i;
+                            <label class="form-check-label m-4">
+                            <input type="checkbox" checked="checked" class="form-check-input"
+                            name="dayofweekcheckbox" value="@i">
+                            @day.ToString()
+                            
+                            </label>
+
+                           
+
+                        }
+                    }
+
+                </div>
+
+
+            </div>
+
+            <div class="form-group w-50">
+                <label asp-for="RequestVacation.VacationTypeId" class="control-label"></label>
+                <select asp-for="RequestVacation.VacationTypeId" class="form-control" id="ddlVacationType" >
+                </select>
+                <span asp-validation-for="RequestVacation.VacationTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestVacation.Comment" class="control-label"></label>
+                <textarea asp-for="RequestVacation.Comment" class="form-control" ></textarea>
+                <span asp-validation-for="RequestVacation.Comment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="حفظ الطلب" class="btn btn-primary"/>
+                    <a asp-action="VacationPlans" class="btn btn-dark">العودة الي القائمة</a>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+
+<script src="~/Module/VacationPlan.js"></script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
