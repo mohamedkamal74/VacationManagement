@@ -28,6 +28,31 @@ namespace VacationManagement.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(VacationPlan model,int [] dayofweekcheckbox)
+        {
+            if (ModelState.IsValid)
+            {
+                for (DateTime  date = model.RequestVacation.StartDate;
+                    date <= model.RequestVacation.EndtDate; date=date.AddDays(1))
+                {
+                    if (Array.IndexOf(dayofweekcheckbox, (int)date.DayOfWeek) != -1)
+                    {
+                        model.Id = 0;
+                        model.VacationDate = date;
+                        model.RequestVacation.RequestDate = DateTime.Now;
+                        _context.VacationPlans.Add(model);
+                        _context.SaveChanges();
+
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+
+        }
         public IActionResult Delete(int? Id)
         {
             return View(_context.RequestVacations.Include(e => e.Employee)

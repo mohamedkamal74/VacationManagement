@@ -9,31 +9,34 @@
 <p>
     <a asp-action="Create" class="btn btn-info">طلب اجازة جديد</a>
 </p>
-<table class="table">
+<table class="table ">
     <thead>
         <tr>
-            <th>
+            <th ">
                 @Html.DisplayNameFor(model => model.EmployeeId)
             </th>
-            <th>
+            <th ">
                 @Html.DisplayNameFor(model => model.RequestDate)
             </th>
             
-            <th>
+            <th class="col-md-2">
                 @Html.DisplayNameFor(model => model.VacationTypeId)
             </th>
             
-            <th>
+            <th ">
                 @Html.DisplayNameFor(model => model.Comment)
             </th>
-            <th>
+            <th ">
                 @Html.DisplayNameFor(model => model.Approved)
             </th>
-            <th>
+            <th ">
                 @Html.DisplayNameFor(model => model.DateApproved)
             </th>
-           
-            <th>الاحداث</th>
+            
+           <th></th>
+           <th></th>
+           <th></th>
+            <th >الاحداث</th>
         </tr>
     </thead>
     <tbody>
