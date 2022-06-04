@@ -12,6 +12,11 @@
     <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if( ViewBag.message != null)
+            {
+            <h4 class="alert alert-danger w-100">@ViewBag.message</h4>
+            <br />
+            }
             <div class="input-group mb-3">
                 <span class="input-group-text"> الموظف</span>
                 <input type="text" class="form-control" placeholder="ادخل اسم الموظف " id="employeeName" name="employeeName"/>

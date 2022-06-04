@@ -32,9 +32,17 @@ namespace VacationManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(VacationPlan model,int [] dayofweekcheckbox)
-        {
+         {
             if (ModelState.IsValid)
             {
+                var result = _context.VacationPlans.Where(x => x.RequestVacation.EmployeeId == model.RequestVacation.EmployeeId
+                  && x.RequestVacation.StartDate >= model.RequestVacation.StartDate
+                  && x.RequestVacation.EndtDate <= model.RequestVacation.EndtDate).FirstOrDefault();
+                if(result != null)
+                {
+                    ViewBag.message = "هذه الاجازة موجودة مسبقا !";
+                    return View(model);
+                }
                 for (DateTime  date = model.RequestVacation.StartDate;
                     date <= model.RequestVacation.EndtDate; date=date.AddDays(1))
                 {
@@ -45,10 +53,9 @@ namespace VacationManagement.Controllers
                         model.RequestVacation.RequestDate = DateTime.Now;
                         _context.VacationPlans.Add(model);
                         _context.SaveChanges();
-
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(VacationPlans));
             }
             return View(model);
 

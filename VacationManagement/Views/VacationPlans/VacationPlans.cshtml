@@ -12,63 +12,63 @@
 <table class="table ">
     <thead>
         <tr>
-            <th ">
+            <th class="col-md-2">
                 @Html.DisplayNameFor(model => model.EmployeeId)
             </th>
-            <th ">
+            <th >
                 @Html.DisplayNameFor(model => model.RequestDate)
             </th>
             
-            <th class="col-md-2">
+            <th class="col-md-1">
                 @Html.DisplayNameFor(model => model.VacationTypeId)
             </th>
-            
-            <th ">
+            <th></th>
+           <th></th>
+       
+            <th >
                 @Html.DisplayNameFor(model => model.Comment)
             </th>
-            <th ">
+            <th >
                 @Html.DisplayNameFor(model => model.Approved)
             </th>
-            <th ">
+            <th >
                 @Html.DisplayNameFor(model => model.DateApproved)
             </th>
             
-           <th></th>
-           <th></th>
-           <th></th>
-            <th >الاحداث</th>
+           
+            <th class="col-md-2">الاحداث</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="col-md-2">
                 @Html.DisplayFor(modelItem => item.Employee.Name)
             </td>
-            <td>
+            <td class="col-md-1">
                 @Html.DisplayFor(modelItem => item.RequestDate)
             </td>
            
-            <td style="color:#ffff;background-color:@item.VacationType.BackGroundColor">
+            <td class="col-md-1" style="color:#ffff;background-color:@item.VacationType.BackGroundColor">
                 @Html.DisplayFor(modelItem => item.StartDate)
             </td>
-             <td style="color:#ffff;background-color:@item.VacationType.BackGroundColor">
+             <td class="col-md-1" style="color:#ffff;background-color:@item.VacationType.BackGroundColor">
                 @Html.DisplayFor(modelItem => item.VacationType.VacationName)
             </td>
-            <td style="color:#ffff;background-color:@item.VacationType.BackGroundColor">
+            <td class="col-md-1" style="color:#ffff;background-color:@item.VacationType.BackGroundColor">
                 @Html.DisplayFor(modelItem => item.EndtDate)
             </td>
-            <td>
+            <td class="col-md-2">
                 @Html.DisplayFor(modelItem => item.Comment)
             </td>
-            <td>
+            <td class="col-md-1">
                <input type="checkbox" checked="@item.Approved"  style="width:30px;height:30px" disabled/>
             </td>
-            <td>
+            <td class="col-md-1">
                 @Html.DisplayFor(modelItem => item.DateApproved)
             </td>
             
-            <td>
+            <td class="col-md-2">
                 @Html.ActionLink("تعديل", "Edit", new {  id=item.Id  },htmlAttributes:new{@class="btn btn-success"}) 
                 @Html.ActionLink("مسح", "Delete", new { id=item.Id  },htmlAttributes:new{@class="btn btn-danger"})
             </td>
