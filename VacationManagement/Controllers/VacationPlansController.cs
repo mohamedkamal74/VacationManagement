@@ -60,6 +60,30 @@ namespace VacationManagement.Controllers
             return View(model);
 
         }
+
+        public IActionResult Edit(int? Id)
+        {
+            ViewBag.Employees = _context.Employees.OrderBy(x => x.Name).ToList();
+            ViewBag.VacationTypes = _context.VacationTypes.OrderBy(x => x.VacationName).ToList();
+            return View(_context.RequestVacations.Include(x=>x.Employee)
+                .Include(x=>x.VacationType).Include(x=>x.VacationPlanList).FirstOrDefault(x=>x.Id==Id));
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(RequestVacation model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Approved)
+                    model.DateApproved = DateTime.Now;
+                _context.RequestVacations.Update(model);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.Employees = _context.Employees.OrderBy(x => x.Name).ToList();
+            ViewBag.VacationTypes = _context.VacationTypes.OrderBy(x => x.VacationName).ToList();
+            return View(model);
+        }
         public IActionResult Delete(int? Id)
         {
             return View(_context.RequestVacations.Include(e => e.Employee)
