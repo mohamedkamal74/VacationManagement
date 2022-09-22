@@ -9,79 +9,134 @@
 <h4 class="text-info">تعديل طلب الاجازة</h4>
 <hr />
 
- <form asp-action="Edit">
-<div class="row">
-    <div class="col-md-4">
-       
+<form asp-action="Edit">
+    <div class="row">
+        <div class="col-md-6">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" readonly/>
+                <input asp-for="Id" class="form-control" readonly />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" class="form-control" 
-                asp-items="@(new SelectList (ViewBag.Employees,"Id","Name"))">
+                <select asp-for="EmployeeId" class="form-control"
+                        asp-items="@(new SelectList (ViewBag.Employees,"Id","Name"))">
                     <option value="">اختر الموظف ---</option>
                 </select>
                 <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group w-50">
                 <label asp-for="RequestDate" class="control-label"></label>
                 <input asp-for="RequestDate" class="form-control" />
                 <span asp-validation-for="RequestDate" class="text-danger"></span>
             </div>
-             <div class="form-group">
+            <div class="form-group">
                 <label asp-for="VacationTypeId" class="control-label"></label>
-                <select asp-for="VacationTypeId" class="form-control" 
-                asp-items="@(new SelectList ( ViewBag.VacationTypes,"Id","VacationName"))">
+                <select asp-for="VacationTypeId" class="form-control"
+                        asp-items="@(new SelectList ( ViewBag.VacationTypes,"Id","VacationName"))">
                     <option value="">اختر الموظف ---</option>
                 </select>
                 <span asp-validation-for="VacationTypeId" class="text-danger"></span>
             </div>
             <div class="row">
-            <div class="form-group col-md-6">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-6">
-                <label asp-for="EndtDate" class="control-label"></label>
-                <input asp-for="EndtDate" class="form-control" />
-                <span asp-validation-for="EndtDate" class="text-danger"></span>
-            </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="StartDate" class="control-label"></label>
+                    <input asp-for="StartDate" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="EndtDate" class="control-label"></label>
+                    <input asp-for="EndtDate" class="form-control" />
+                    <span asp-validation-for="EndtDate" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Comment" class="control-label"></label>
-                <textarea asp-for="Comment" class="form-control" ></textarea>
+                <textarea asp-for="Comment" class="form-control"></textarea>
                 <span asp-validation-for="Comment" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" style="width:25px;height:25px;border-radius:50%"
-                    asp-for="Approved" /> @Html.DisplayNameFor(model => model.Approved)
+                           asp-for="Approved" /> &ensp; @Html.DisplayNameFor(model => model.Approved)
                 </label>
             </div>
-           @* <div class="form-group">
-                <label asp-for="DateApproved" class="control-label"></label>
-                <input asp-for="DateApproved" class="form-control" />
-                <span asp-validation-for="DateApproved" class="text-danger"></span>
-            </div>*@
-            
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-     
-    </div>
-</div>
-   </form>
 
-<div>
-    <a asp-action="Index" class="btn badge-dark">Back to List</a>
-</div>
+
+            <div class="form-group">
+                <input type="submit" value="Edit" asp-action="Edit" asp-controller="VacationPlans" class="btn btn-primary" />
+                 <a asp-action="VacationPlans" class="btn badge-dark">Back to List</a>
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <h4 class="text-blue">ايام الاجازات ====>(<span class="text-danger" id="countVacation">0</span>)</h4>
+            <hr />
+
+            <table class="table table-hover  w-100">
+                <thead>
+                    <tr>
+                        <td>Id</td>
+                        <td>Date</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.VacationPlanList.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                <input asp-for="VacationPlanList[i].Id" class="form-control" readonly />
+                                <input asp-for="VacationPlanList[i].ReaquestVacationId" class="form-control" hidden />
+                            </td>
+                            <td>
+                                <input asp-for="VacationPlanList[i].VacationDate" class="form-control" readonly />
+                            </td>
+
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</form>
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
+}
+
+
+<script>
+
+    $(document).ready(()=>{
+        GetCountVacationEmployee(@Model.Id);
+    });
+    GetCountVacationEmployee=(id)=>{
+
+
+         $.ajax({
+
+        url:`/VacationPlans/GetCountVacationEmployee/${id}`,
+        method:'GET',
+        cache:false,
+        success:(data)=>{
+          $('#countVacation').html(data);
+        }
+
+    });
+
+    };
+   
+
+
+
+
+</script>

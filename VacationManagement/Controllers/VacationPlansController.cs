@@ -24,6 +24,11 @@ namespace VacationManagement.Controllers
             return Json(_context.VacationTypes.OrderBy(v => v.Id).ToList());
         }
 
+        public IActionResult GetCountVacationEmployee(int Id)
+        {
+            return Json(_context.VacationPlans.Where(x=>x.ReaquestVacationId.Equals(Id)).Count());
+        }
+
         public IActionResult Create()
         {
             return View();
@@ -78,7 +83,7 @@ namespace VacationManagement.Controllers
                     model.DateApproved = DateTime.Now;
                 _context.RequestVacations.Update(model);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(VacationPlans));
             }
             ViewBag.Employees = _context.Employees.OrderBy(x => x.Name).ToList();
             ViewBag.VacationTypes = _context.VacationTypes.OrderBy(x => x.VacationName).ToList();
