@@ -1,0 +1,66 @@
+﻿@using System.Data
+@model DataTable
+@{
+    ViewData["Title"] = "ViewReportVacationPlan";
+}
+
+<h4 class="alert alert-info">عرض تقرير الاجازة</h4>
+
+<form asp-action="GetReportVacationPlan" asp-controller="VacationPlans">
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label class="control-lable">من تاريخ</label>
+            <input type="date" class="form-control" name="FromDate" value="@(DateTime.Now.ToString("yyyy"))-01-01" />
+        </div>
+        <div class="form-group col-md-6">
+            <label class="control-lable">الي تاريخ</label>
+            <input type="date" class="form-control" name="ToDate" value="@(DateTime.Now.ToString("yyyy"))-12-30" />
+        </div>
+
+        <div class="form-group col-md-6">
+            <label class="control-lable">االموظفين</label>
+            <select class="form-control" name="EmployeeId" asp-items="@(new SelectList (ViewBag.Employees,"Id","Name"))">
+                <option value="">------اختر الموظف----</option>
+            </select>
+        </div>
+    </div>
+
+    <div form-group col-md-6>
+        <button type="submit" class="btn btn-success col-md-3">search</button>
+    </div>
+
+</form>
+
+
+@if (Model != null)
+{
+
+    <table class="table table-bordered table-striped hover">
+        <thead>
+            <tr>
+                @foreach (DataColumn col in Model.Columns)
+                {
+                    <td>@col.ColumnName</td>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (DataRow row in Model.Rows)
+            {
+                <tr>
+                    @foreach (DataColumn col in Model.Columns)
+                    {
+                        <th>@row[col.ColumnName]</th>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+}
+else
+{
+    <h4 class="alert alert-danger">لا يوجد بيانات -------!</h4>
+}
