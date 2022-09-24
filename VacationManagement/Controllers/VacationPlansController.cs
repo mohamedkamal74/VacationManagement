@@ -118,7 +118,8 @@ namespace VacationManagement.Controllers
         {
             string Id = "";
             if (EmployeeId != 0 && EmployeeId.ToString() != "")
-                Id = $"Employees.Id={EmployeeId}";
+                Id = $"and Employees.Id={EmployeeId}";
+
             var sqlQuery = _context.SqlDataTable($@"SELECT distinct dbo.Employees.Id,   
                      dbo.Employees.Name, dbo.Employees.VacationBalance,
                      SUM(dbo.VacationTypes.NumberDays) as Totalvacations,
@@ -128,8 +129,8 @@ namespace VacationManagement.Controllers
                 dbo.VacationPlans ON dbo.RequestVacations.Id = dbo.VacationPlans.ReaquestVacationId INNER JOIN
                 dbo.VacationTypes ON dbo.RequestVacations.VacationTypeId = dbo.VacationTypes.Id
 			    where VacationPlans.VacationDate between
-                 '" +FromDate.ToString("yyyy-MM-dd")+"' and '"+ToDate.ToString("yyyy-MM-dd") +"'"+
-               "and RequestVacations.Approved='True'"+
+                 '" +FromDate.ToString("yyyy-MM-dd")+"' and '"+ToDate.ToString("yyyy-MM-dd") + "' "+
+               " and RequestVacations.Approved = 'True'"+
                $"{Id} Group By dbo.Employees.Id, dbo.Employees.Name, dbo.Employees.VacationBalance");
 
 

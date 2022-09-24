@@ -21,13 +21,13 @@
         <div class="form-group col-md-6">
             <label class="control-lable">االموظفين</label>
             <select class="form-control" name="EmployeeId" asp-items="@(new SelectList (ViewBag.Employees,"Id","Name"))">
-                <option value="">------اختر الموظف----</option>
+                <option value="">------ اختر الموظف----</option>
             </select>
         </div>
     </div>
 
     <div form-group col-md-6>
-        <button type="submit" class="btn btn-success col-md-3">search</button>
+        <input type="submit" class="btn btn-success col-md-3" value="search" />
     </div>
 
 </form>
