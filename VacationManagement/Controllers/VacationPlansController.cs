@@ -114,13 +114,34 @@ namespace VacationManagement.Controllers
             return View();
         }
 
+        public IActionResult ViewReportVacationPlan2()
+        {
+            ViewBag.Employees = _context.Employees.OrderBy(x => x.Name).ToList();
+            return View();
+        }
+
         public IActionResult GetReportVacationPlan(int EmployeeId, DateTime FromDate, DateTime ToDate)
         {
             string Id = "";
             if (EmployeeId != 0 && EmployeeId.ToString() != "")
                 Id = $"and Employees.Id={EmployeeId}";
 
-            var sqlQuery = _context.SqlDataTable($@"SELECT distinct dbo.Employees.Id,   
+            #region
+            //      var sqlQuery = _context.SqlDataTable($@"SELECT distinct dbo.Employees.Id,   
+            //               dbo.Employees.Name, dbo.Employees.VacationBalance,
+            //               SUM(dbo.VacationTypes.NumberDays) as Totalvacations,
+            //dbo.Employees.VacationBalance - SUM(dbo.VacationTypes.NumberDays) as Total
+            //               FROM  dbo.Employees INNER JOIN
+            //          dbo.RequestVacations ON dbo.Employees.Id = dbo.RequestVacations.EmployeeId INNER JOIN
+            //          dbo.VacationPlans ON dbo.RequestVacations.Id = dbo.VacationPlans.ReaquestVacationId INNER JOIN
+            //          dbo.VacationTypes ON dbo.RequestVacations.VacationTypeId = dbo.VacationTypes.Id
+            // where VacationPlans.VacationDate between
+            //           '" +FromDate.ToString("yyyy-MM-dd")+"' and '"+ToDate.ToString("yyyy-MM-dd") + "' "+
+            //         " and RequestVacations.Approved = 'True'"+
+            //         $"{Id} Group By dbo.Employees.Id, dbo.Employees.Name, dbo.Employees.VacationBalance");
+            #endregion
+
+            string sqlQuery =$@"SELECT distinct dbo.Employees.Id,   
                      dbo.Employees.Name, dbo.Employees.VacationBalance,
                      SUM(dbo.VacationTypes.NumberDays) as Totalvacations,
 					 dbo.Employees.VacationBalance - SUM(dbo.VacationTypes.NumberDays) as Total
@@ -129,13 +150,14 @@ namespace VacationManagement.Controllers
                 dbo.VacationPlans ON dbo.RequestVacations.Id = dbo.VacationPlans.ReaquestVacationId INNER JOIN
                 dbo.VacationTypes ON dbo.RequestVacations.VacationTypeId = dbo.VacationTypes.Id
 			    where VacationPlans.VacationDate between
-                 '" +FromDate.ToString("yyyy-MM-dd")+"' and '"+ToDate.ToString("yyyy-MM-dd") + "' "+
-               " and RequestVacations.Approved = 'True'"+
-               $"{Id} Group By dbo.Employees.Id, dbo.Employees.Name, dbo.Employees.VacationBalance");
+                 '" + FromDate.ToString("yyyy-MM-dd") + "' and '" + ToDate.ToString("yyyy-MM-dd") + "' " +
+              " and RequestVacations.Approved = 'True'" +
+              $"{Id} Group By dbo.Employees.Id, dbo.Employees.Name, dbo.Employees.VacationBalance";
 
+            var spGetData = _context.SpGetReportVacationPlans.FromSqlRaw(sqlQuery).ToList();
 
             ViewBag.Employees = _context.Employees.OrderBy(x => x.Name).ToList();
-            return View("ViewReportVacationPlan", sqlQuery);
+            return View("ViewReportVacationPlan2", spGetData);
         }
     }
 }

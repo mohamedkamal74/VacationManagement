@@ -1,10 +1,9 @@
-﻿@using System.Data
-@model DataTable
+﻿@model List< SpGetReportVacationPlans>
 @{
     ViewData["Title"] = "ViewReportVacationPlan";
 }
 
-<h4 class="alert alert-info">عرض تقرير الاجازة</h4>
+<h4 class="alert alert-info"> عرض تقرير الاجازة</h4>
 
 <form asp-action="GetReportVacationPlan" asp-controller="VacationPlans">
 
@@ -18,23 +17,26 @@
             <input type="date" class="form-control" name="ToDate" value="@(DateTime.Now.ToString("yyyy"))-12-30" />
         </div>
 
-        <div class="form-group col-md-6">
+
+        <div class="form-group col-md-6 ">
             <label class="control-lable">االموظفين</label>
             <select class="form-control" name="EmployeeId" asp-items="@(new SelectList (ViewBag.Employees,"Id","Name"))">
                 <option value="">------ اختر الموظف----</option>
             </select>
         </div>
-    </div>
 
-    <div class="form-group col-md-6">
+         <div class="form-group col-md-2">
         <input type="submit" class="btn btn-success col-md-12" value="search" />
     </div>
-     <div class="form-group col-md-6">
+     <div class="form-group col-md-2">
         <input type="submit" class="btn btn-info col-md-12" value="Print" />
     </div>
-     <div class="form-group col-md-6">
+     <div class="form-group col-md-2">
         <input type="submit" class="btn btn-outline-secondary col-md-12" value="Download Pdf" />
     </div>
+    </div>
+
+   
 
 </form>
 
@@ -45,20 +47,22 @@
     <table class="table table-bordered table-striped hover">
         <thead>
             <tr>
-                @foreach (DataColumn col in Model.Columns)
-                {
-                    <td>@col.ColumnName</td>
-                }
+               <th>Id</th>
+               <th>Name</th>
+               <th>Vacation Balance</th>
+               <th>Total Vacation</th>
+               <th>Total</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (DataRow row in Model.Rows)
+            @foreach (var item in Model)
             {
                 <tr>
-                    @foreach (DataColumn col in Model.Columns)
-                    {
-                        <th>@row[col.ColumnName]</th>
-                    }
+                   <td>@item.Id</td>
+                   <td>@item.Name</td>
+                   <td>@item.VacationBalance</td>
+                   <td>@item.Totalvacations</td>
+                   <td>@item.Total</td>
                 </tr>
             }
         </tbody>
